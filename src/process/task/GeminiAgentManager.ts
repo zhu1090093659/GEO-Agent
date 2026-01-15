@@ -26,7 +26,6 @@ type UiMcpServerConfig = {
 export class GeminiAgentManager extends BaseAgentManager<{
   workspace: string;
   model: TProviderWithModel;
-  imageGenerationModel?: TProviderWithModel;
   webSearchEngine?: 'google' | 'default';
   mcpServers?: Record<string, UiMcpServerConfig>;
   contextFileName?: string;
@@ -59,8 +58,8 @@ export class GeminiAgentManager extends BaseAgentManager<{
     this.model = model;
     this.contextFileName = data.contextFileName;
     this.contextContent = data.contextContent;
-    this.bootstrap = Promise.all([ProcessConfig.get('gemini.config'), this.getImageGenerationModel(), this.getMcpServers()])
-      .then(async ([config, imageGenerationModel, mcpServers]) => {
+    this.bootstrap = Promise.all([ProcessConfig.get('gemini.config'), this.getMcpServers()])
+      .then(async ([config, mcpServers]) => {
         // 获取当前账号对应的 GOOGLE_CLOUD_PROJECT
         // Get GOOGLE_CLOUD_PROJECT for current account
         let projectId: string | undefined;
@@ -81,7 +80,6 @@ export class GeminiAgentManager extends BaseAgentManager<{
           GOOGLE_CLOUD_PROJECT: projectId,
           workspace: this.workspace,
           model: this.model,
-          imageGenerationModel,
           webSearchEngine: data.webSearchEngine,
           mcpServers,
           contextFileName: this.contextFileName,
@@ -91,17 +89,6 @@ export class GeminiAgentManager extends BaseAgentManager<{
       .then(async () => {
         await this.injectHistoryFromDatabase();
       });
-  }
-
-  private getImageGenerationModel(): Promise<TProviderWithModel | undefined> {
-    return ProcessConfig.get('tools.imageGenerationModel')
-      .then((imageGenerationModel) => {
-        if (imageGenerationModel && imageGenerationModel.switch) {
-          return imageGenerationModel;
-        }
-        return undefined;
-      })
-      .catch(() => Promise.resolve(undefined));
   }
 
   private async getMcpServers(): Promise<Record<string, UiMcpServerConfig>> {

@@ -9,12 +9,6 @@
  * 消息工具结果类型定义
  */
 
-export interface ImageGenerationResult {
-  img_url?: string;
-  relative_path?: string;
-  error?: string;
-}
-
 export interface WriteFileResult {
   fileDiff: string;
   fileName: string;

@@ -51,9 +51,6 @@ export interface IConfigStorageRefer {
   'css.themes': ICssTheme[]; // 自定义 CSS 主题列表 / Custom CSS themes list
   'css.activeThemeId': string; // 当前激活的主题 ID / Currently active theme ID
   'gemini.defaultModel': string;
-  'tools.imageGenerationModel': TProviderWithModel & {
-    switch: boolean;
-  };
   // 是否在粘贴文件到工作区时询问确认（true = 不再询问）
   'workspace.pasteConfirm'?: boolean;
   // guid 页面上次选择的 agent 类型 / Last selected agent type on guid page
@@ -133,7 +130,6 @@ export type ModelType =
   | 'text' // 文本对话
   | 'vision' // 视觉理解
   | 'function_calling' // 工具调用
-  | 'image_generation' // 图像生成
   | 'web_search' // 网络搜索
   | 'reasoning' // 推理模型
   | 'embedding' // 嵌入模型

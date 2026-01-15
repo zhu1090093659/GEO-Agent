@@ -153,3 +153,4 @@ specs/**/draft-*
 specs/**/work-*
 .spec-cache/
 .tmp/
+.ace-tool/
